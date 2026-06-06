@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Create Account - {{ config('app.name') }}</title>
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <title>Create Account - <?php echo e(config('app.name')); ?></title>
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>* { font-family: 'Inter', sans-serif; }</style>
@@ -18,31 +18,31 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
             </div>
-            @if($tenant) 
-            <h1 class="text-3xl font-bold text-gray-900">{{ $tenant->name }} </h2>
-            @endif
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($tenant): ?> 
+            <h1 class="text-3xl font-bold text-gray-900"><?php echo e($tenant->name); ?> </h2>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             <h2 class="text-xl font-bold text-gray-900">Create Account</h2>
             <p class="mt-2 text-gray-600">Join your organization</p>
         </div>
 
         <div class="bg-white rounded-2xl shadow-xl p-8">
-            @if ($errors->any())
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($errors->any()): ?>
                 <div class="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
-                    @foreach ($errors->all() as $error)
-                        <p class="text-sm text-red-700">{{ $error }}</p>
-                    @endforeach
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
+                        <p class="text-sm text-red-700"><?php echo e($error); ?></p>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                 </div>
-            @endif
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-            <form action="{{ route('tenant.register') }}" method="POST" class="space-y-5">
-                @csrf
+            <form action="<?php echo e(route('tenant.register')); ?>" method="POST" class="space-y-5">
+                <?php echo csrf_field(); ?>
 
-                <div @class([
+                <div class="<?php echo \Illuminate\Support\Arr::toCssClasses([
                     'hidden'=>$tenant
-                ])>
+                ]); ?>">
                     <label for="tenant_slug" class="block text-sm font-medium text-gray-700 mb-1">Organization ID</label>
                     <input id="tenant_slug" name="tenant_slug" type="text"
-                           value="{{ old('tenant_slug', $tenant->slug ?? '') }}"
+                           value="<?php echo e(old('tenant_slug', $tenant->slug ?? '')); ?>"
                            placeholder="your-organization"
                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
                            required>
@@ -50,7 +50,7 @@
 
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                    <input id="name" name="name" type="text" value="{{ old('name') }}"
+                    <input id="name" name="name" type="text" value="<?php echo e(old('name')); ?>"
                            placeholder="John Smith"
                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
                            required>
@@ -58,7 +58,7 @@
 
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                    <input id="email" name="email" type="email" value="{{ old('email') }}"
+                    <input id="email" name="email" type="email" value="<?php echo e(old('email')); ?>"
                            placeholder="you@example.com"
                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
                            required>
@@ -89,7 +89,7 @@
             <div class="mt-6 text-center">
                 <p class="text-sm text-gray-600">
                     Already have an account?
-                    <a href="{{ $tenant ? route('tenant.login').'?tenant='.$tenant->slug : route('tenant.login') }}" class="font-medium text-indigo-600 hover:text-indigo-500">Sign in</a>
+                    <a href="<?php echo e($tenant ? route('tenant.login').'?tenant='.$tenant->slug : route('tenant.login')); ?>" class="font-medium text-indigo-600 hover:text-indigo-500">Sign in</a>
                 </p>
             </div>
         </div>
@@ -97,3 +97,4 @@
 </div>
 </body>
 </html>
+<?php /**PATH C:\xampp\htdocs\multi-tenant\resources\views/auth/tenant-register.blade.php ENDPATH**/ ?>

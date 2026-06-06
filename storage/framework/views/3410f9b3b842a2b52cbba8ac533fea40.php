@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Sign In - {{ config('app.name') }}</title>
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <title>Sign In - <?php echo e(config('app.name')); ?></title>
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>* { font-family: 'Inter', sans-serif; }</style>
@@ -20,7 +20,7 @@
                 </svg>
             </div>
             <h1 class="text-3xl font-bold text-gray-900">
-                @if($tenant) {{ $tenant->name }} @else Welcome Back @endif
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($tenant): ?> <?php echo e($tenant->name); ?> <?php else: ?> Welcome Back <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </h1>
             <p class="mt-2 text-gray-600">Sign in to your account</p>
         </div>
@@ -28,21 +28,21 @@
         <!-- Card -->
         <div class="bg-white rounded-2xl shadow-xl p-8">
             <!-- Validation Errors -->
-            @if ($errors->any())
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($errors->any()): ?>
                 <div class="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
-                    @foreach ($errors->all() as $error)
-                        <p class="text-sm text-red-700">{{ $error }}</p>
-                    @endforeach
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
+                        <p class="text-sm text-red-700"><?php echo e($error); ?></p>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                 </div>
-            @endif
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-            <form action="{{ route('tenant.login') }}" method="POST" class="space-y-5">
-                @csrf
+            <form action="<?php echo e(route('tenant.login')); ?>" method="POST" class="space-y-5">
+                <?php echo csrf_field(); ?>
 
                 <!-- Organization Slug -->
-                <div @class([
+                <div class="<?php echo \Illuminate\Support\Arr::toCssClasses([
                     'hidden'=>$tenant
-                ])>
+                ]); ?>">
                     <label for="tenant_slug" class="block text-sm font-medium text-gray-700 mb-1">
                         Organization ID
                     </label>
@@ -53,9 +53,16 @@
                             </svg>
                         </div>
                         <input id="tenant_slug" name="tenant_slug" type="text"
-                               value="{{ old('tenant_slug', $tenant->slug ?? '') }}"
+                               value="<?php echo e(old('tenant_slug', $tenant->slug ?? '')); ?>"
                                placeholder="your-organization"
-                               class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm @error('tenant_slug') border-red-500 @enderror"
+                               class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm <?php $__errorArgs = ['tenant_slug'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-red-500 <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                required>
                     </div>
                     <p class="mt-1 text-xs text-gray-500">The unique identifier for your organization</p>
@@ -73,9 +80,16 @@
                             </svg>
                         </div>
                         <input id="email" name="email" type="email" autocomplete="email"
-                               value="{{ old('email') }}"
+                               value="<?php echo e(old('email')); ?>"
                                placeholder="you@example.com"
-                               class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm @error('email') border-red-500 @enderror"
+                               class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-red-500 <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                required>
                     </div>
                 </div>
@@ -117,7 +131,7 @@
             <div class="mt-6 text-center">
                 <p class="text-sm text-gray-600">
                     New to the platform?
-                    <a href="{{ $tenant ? route('tenant.register').'?tenant='.$tenant->slug : route('tenant.register') }}" class="font-medium text-indigo-600 hover:text-indigo-500">
+                    <a href="<?php echo e($tenant ? route('tenant.register').'?tenant='.$tenant->slug : route('tenant.register')); ?>" class="font-medium text-indigo-600 hover:text-indigo-500">
                         Create an account
                     </a>
                 </p>
@@ -134,3 +148,4 @@
 </div>
 </body>
 </html>
+<?php /**PATH C:\xampp\htdocs\multi-tenant\resources\views/auth/tenant-login.blade.php ENDPATH**/ ?>

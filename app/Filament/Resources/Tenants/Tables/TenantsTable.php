@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Tenants\Tables;
 
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -19,7 +20,7 @@ class TenantsTable
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('slug')
-                    ->searchable(),                
+                    ->searchable(),
                 TextColumn::make('database_schema')
                     ->searchable(),
                 IconColumn::make('is_active')
@@ -36,12 +37,18 @@ class TenantsTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-               
+
             ])
             ->filters([
                 //
             ])
             ->recordActions([
+                Action::make('login')
+                    ->icon('heroicon-o-arrow-right-on-rectangle')
+                    ->color('success')
+                    ->visible(fn($record) => $record->is_active)
+                    ->url(fn($record) => url('/login?tenant=' . $record->slug))
+                    ->openUrlInNewTab(),
                 ViewAction::make(),
                 EditAction::make(),
             ])

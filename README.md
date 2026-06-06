@@ -51,6 +51,7 @@ DB_PASSWORD=your_password
 
 SESSION_DRIVER=file
 
+APP_URL=http://127.0.0.1:8000
 ```
 
 ### 3. Create Database & Run Migrations

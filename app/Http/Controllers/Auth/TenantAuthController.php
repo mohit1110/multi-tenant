@@ -154,9 +154,7 @@ class TenantAuthController extends Controller
         DB::reconnect('pgsql');
 
         // Check if email already exists in this tenant
-        $existingUser = User::where('email', $request->email)
-            // ->where('tenant_id', $tenant->id)
-            ->first();
+        $existingUser = User::where('email', $request->email)->first();
 
         if ($existingUser) {
             return back()->withErrors([

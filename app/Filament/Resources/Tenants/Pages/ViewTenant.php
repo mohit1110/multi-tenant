@@ -42,6 +42,12 @@ class ViewTenant extends ViewRecord
                     Notification::make()->title('Tenant Deactivated')->warning()->send();
                     $this->refreshFormData(['is_active']);
                 }),
+            Action::make('login')
+                ->icon('heroicon-o-arrow-right-on-rectangle')
+                ->color('success')
+                ->visible(fn() => $this->record->is_active)
+                ->url(fn($record) => url('/login?tenant=' . $record->slug))
+                ->openUrlInNewTab(),
         ];
     }
 }
